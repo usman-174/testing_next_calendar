@@ -10,10 +10,21 @@ import { SWRConfig } from "swr";
 import axios from "axios";
 import { ChakraProvider } from "@chakra-ui/react";
 import "../style.css";
-axios.defaults.baseURL =
-  process.env.NEXT_APP_SERVER_URL ||
-  process.env.SERVER_URL ||
-  "https://iframe-calendar.herokuapp.com/";
+if (
+  process.env.NEXT_APP_NODE_ENV !== "production" ||
+  process.env.NODE_ENV !== "production"
+) {
+  axios.defaults.baseURL =
+    process.env.NEXT_APP_SERVER_URL ||
+    process.env.SERVER_URL ||
+    "http://localhost:5000" ||
+    "https://iframe-calendar.herokuapp.com/";
+} else {
+  axios.defaults.baseURL =
+    process.env.NEXT_APP_SERVER_URL ||
+    process.env.SERVER_URL ||
+    "https://iframe-calendar.herokuapp.com/";
+}
 const fetcher = async (url) => {
   try {
     const { data } = await axios.get(url);

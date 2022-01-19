@@ -1,37 +1,24 @@
-import { useEffect, useState } from "react";
-import useSWR from "swr";
 import {
   Box,
   Button,
   Card,
   CardContent,
   CardHeader,
-  Divider,
-  Grid,
-  InputLabel,TextField,
-  MenuItem,
-  Select,FormControl,
+  Divider, FormControl, Grid,
+  InputLabel, MenuItem,
+  Select, TextField
 } from "@mui/material";
-import { toast, ToastContainer } from "material-react-toastify";
-
-import "material-react-toastify/dist/ReactToastify.css";
-
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import DeleteAlert from "./DeleteAlert";
 import axios from "axios";
-import CreateTemplate from "./AddTemplate";
-import EditTemplate from "./EditTemplate";
+import { toast, ToastContainer } from "material-react-toastify";
+import "material-react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+
+
 
 export const TemplateDetails = (props) => {
   const { data: templatesList, isValidating, error, mutate } = useSWR("/templates/all");
 
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const [template, setTemplate] = useState("");
   const [templateId, setTemplateId] = useState("");
@@ -39,41 +26,6 @@ export const TemplateDetails = (props) => {
   const [phone, setPhone] = useState("");
   const [keywords, setkeywords] = useState([]);
 
-  const HandleDelete = async () => {
-    try {
-      const { data } = await axios.delete(`/templates/delete/${templateId}`);
-      if (data?.success) {
-        toast.success("Template Deleted", {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        setTemplate("");
-        mutate(
-          templatesList.filter((temp) => temp.id !== templateId),
-          true
-        );
-        handleClose();
-        return;
-      }
-    } catch (error) {
-      toast.error(error?.response?.data?.error || "Failed to delete the template", {
-        position: "top-center",
-        autoClose: 2200,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      handleClose();
-      return;
-    }
-  };
   const handleSentMessage = async () => {
     try {
       const { data } = await axios.post("/message/", {
@@ -142,27 +94,6 @@ export const TemplateDetails = (props) => {
       <ToastContainer />
       <Card>
         <CardHeader subheader="Select Templated to send Messages" title="Template Messages" />
-        {template && (
-          <Box sx={{ mx: "auto", textAlign: "center" }}>
-            <DeleteForeverIcon
-              onClick={handleClickOpen}
-              fontSize="large"
-              color="error"
-              sx={{ cursor: "pointer", mx: 1 }}
-            />
-            <EditTemplate
-              templateId={templateId}
-              Message={message}
-              List={keywords}
-              Template={template}
-              templatesList={templatesList}
-              isValidating={isValidating}
-              mutate={mutate}
-            />
-          </Box>
-        )}
-        <DeleteAlert HandleDelete={HandleDelete} open={open} handleClose={handleClose} />
-        <Divider />
         <CardContent>
           <Grid container sx={{ textAlign: "center" }} justifyContent={"center"} spacing={5}>
             <Grid item xs={12}>
@@ -237,11 +168,7 @@ export const TemplateDetails = (props) => {
             p: 2,
           }}
         >
-          <CreateTemplate
-            templatesList={templatesList}
-            isValidating={isValidating}
-            mutate={mutate}
-          />
+          
           <Button
             disabled={!phone || !template || !message}
             color="primary"
