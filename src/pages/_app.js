@@ -17,7 +17,6 @@ if (
   axios.defaults.baseURL =
     process.env.NEXT_APP_SERVER_URL ||
     process.env.SERVER_URL ||
-    "http://localhost:5000" ||
     "https://iframe-calendar.herokuapp.com/";
 } else {
   axios.defaults.baseURL =
