@@ -2,7 +2,6 @@ import { Box, Card, CardContent, Divider, Grid, IconButton, Typography } from "@
 import PropTypes from "prop-types";
 import Highlighter from "react-highlight-words";
 import ShowMoreText from "react-show-more-text";
-
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -47,7 +46,6 @@ export const EventCard = ({ searchQ,mutate, event, ...rest }) => {
         return;
       }
     } catch (error) {
-      alert(error.message)
       toast.error(error?.response?.data?.error || "Failed to delete the Event", {
         position: "top-center",
         autoClose: 2200,
@@ -186,7 +184,7 @@ export const EventCard = ({ searchQ,mutate, event, ...rest }) => {
             display: "flex",
           }}
         >
-          <ClockIcon color="error" />
+          <AccessTimeIcon color="error" />
           <Typography color="textSecondary" display="inline" sx={{ pl: 1 }} variant="body2">
             End : {new Date(event.end?.dateTime).toDateString()} at{" "}
             {new Date(event.end?.dateTime).toLocaleString("en-US", {
